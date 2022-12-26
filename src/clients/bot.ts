@@ -29,12 +29,26 @@ export class Bot {
     this.gateway.start(this.intents, this.events);
   }
 
-  async replyMessage(content: Message, reply: IReplyMessage) {
+  async sendMessage(channel_id: string, message: IReplyMessage) {
+    const data = await (
+      await fetch(`${API_URL}/channels/${channel_id}/messages`, {
+        method: "POST",
+        body: JSON.stringify(message),
+        headers: {
+          Authorization: `Bot ${this.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+    ).json();
+    return data;
+  }
+
+  async replyMessage(message: Message, reply: IReplyMessage) {
     reply.message_reference = {
-      message_id: content.id,
+      message_id: message.id,
     };
     const data = await (
-      await fetch(`${API_URL}/channels/${content.channel_id}/messages`, {
+      await fetch(`${API_URL}/channels/${message.channel_id}/messages`, {
         method: "POST",
         body: JSON.stringify(reply),
         headers: {

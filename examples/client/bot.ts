@@ -38,6 +38,9 @@ bot.on("interactionCreate", (interaction) => {
 
 bot.on("ready", (user) => {
   console.log("Logged as " + user.tag);
+  bot.sendMessage("123456789012345678", {
+    content: "Logged!",
+  });
 });
 
 bot.login(Deno.env.get("DISCORD_TOKEN")!);
